@@ -28,3 +28,12 @@ export function ObjectProperty<T>(
     ...restOptions,
   });
 }
+
+export function ObjectPropertyOptional<T>(
+  getType: () => Class<T>,
+  options: Omit<ApiPropertyOptions, 'type' | 'required'> & {
+    each?: boolean;
+  } = {},
+): PropertyDecorator {
+  return ObjectProperty(getType, { ...options, required: false });
+}

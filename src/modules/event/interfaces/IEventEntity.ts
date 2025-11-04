@@ -7,5 +7,5 @@ export interface IEventEntity extends IAbstractEntity<EventDto> {
 
   totalSeats: number;
 
-  booking: Booking;
+  booking?: Booking;
 }
