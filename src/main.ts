@@ -14,8 +14,8 @@ import {constraintErrors} from "./common/filters/constraint-errors";
 import {UnprocessableEntityFilter} from "./common/filters/unprocessable-entity.filter";
 
 async function bootstrap() {
-  initializeTransactionalContext();
-  patchTypeORMRepositoryWithBaseRepository();
+  // initializeTransactionalContext();
+  // patchTypeORMRepositoryWithBaseRepository();
   const app = await NestFactory.create(AppModule, {
     cors: true,
     bufferLogs: true,

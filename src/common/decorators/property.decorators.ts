@@ -1,5 +1,6 @@
 import type { ApiPropertyOptions } from '@nestjs/swagger';
 import { ApiProperty } from '@nestjs/swagger';
+import type { Type as Class } from '@nestjs/common';
 
 export function UUIDProperty(
     options: Omit<ApiPropertyOptions, 'type' | 'format'> &
@@ -11,5 +12,20 @@ export function UUIDProperty(
         format: 'uuid',
         isArray: options?.each,
         ...options,
+    });
+}
+
+export function ObjectProperty<T>(
+    getType: () => Class<T>,
+    options: Omit<ApiPropertyOptions, 'type'> & { each?: boolean } = {},
+): PropertyDecorator {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { each, ...restOptions } = options;
+
+    // @ts-ignore
+    return ApiProperty({
+        type: () => getType(),
+        isArray: each,
+        ...restOptions,
     });
 }

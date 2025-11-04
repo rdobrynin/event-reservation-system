@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AbstractDto } from '../../../common/dto/abstract.dto';
 import {IEventEntity} from "../interfaces/IEventEntity";
+import {ObjectProperty} from "../../../common/decorators/property.decorators";
+import {Booking} from "../../booking/booking.entity";
 
 export class EventDto extends AbstractDto {
   @ApiProperty({ type: "string" })
@@ -9,11 +11,16 @@ export class EventDto extends AbstractDto {
   @ApiProperty({ type: "number" })
   totalSeats: number;
 
+  @ObjectProperty(() => Booking)
+  booking: Booking;
+
   constructor(entity: IEventEntity) {
     super(entity);
 
     this.name = entity.name;
 
     this.totalSeats = entity.totalSeats;
+
+    this.booking = entity.booking;
   }
 }
