@@ -1,0 +1,42 @@
+services:
+  backend:
+    container_name: event-reservation-system-backend
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file: .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: yarn start:dev
+    depends_on:
+      - postgres
+    ports:
+      - '9000:9000'
+      - '9229:9229'
+    networks:
+      - internal-network
+
+  postgres:
+    container_name: event-reservation-system-postgres
+    environment:
+      PGDATA: /var/lib/postgresql/data/guacamole
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: postgres
+    image: postgres:15.2-alpine
+    restart: always
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d:z
+      - ./pgdata:/var/lib/postgresql/data:Z
+    networks:
+      - internal-network
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  internal-network:
+    driver: bridge
