@@ -11,10 +11,10 @@ export class Booking extends AbstractEntity<BookingDto> {
   @Column({ type: 'uuid' })
   userId: string;
 
-  @Column()
-  eventId: number;
+  @Column({ type: 'uuid' })
+  eventId: string;
 
   @OneToOne(() => Event, (event) => event.booking)
-  @JoinColumn({ name: 'eventId' }) // Custom foreign key name
+  @JoinColumn({ name: 'event_id' }) // Custom foreign key name
   event: Event;
 }

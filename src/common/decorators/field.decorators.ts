@@ -67,8 +67,8 @@ export function NumberField(
   }
 
   if (options?.swagger !== false) {
-    // @ts-ignore
     decorators.push(
+      // @ts-ignore
       ApiProperty({
         type: Number,
         ...options,
