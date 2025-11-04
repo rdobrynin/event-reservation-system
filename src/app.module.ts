@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { addTransactionalDataSource } from 'typeorm-transactional';
+// import { addTransactionalDataSource } from 'typeorm-transactional';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { DataSource } from 'typeorm';
+// import { DataSource } from 'typeorm';
 import { LoggerModule } from 'nestjs-pino';
-import {BookingModule} from "./modules/booking/booking.module";
-import {EventModule} from "./modules/event/event.module";
+import { BookingModule } from './modules/booking/booking.module';
+import { EventModule } from './modules/event/event.module';
 
 @Module({
   imports: [
@@ -52,8 +52,8 @@ import {EventModule} from "./modules/event/event.module";
         },
       },
     }),
-      BookingModule,
-      EventModule,
+    BookingModule,
+    EventModule,
   ],
   controllers: [],
   providers: [],

@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import {CreateEventDto} from "./dto/create-event.dto";
-import {CreateReserveDto} from "../booking/dto/create-reserve.dto";
+import { CreateEventDto } from './dto/create-event.dto';
+import { CreateReserveDto } from '../booking/dto/create-reserve.dto';
 
 @Injectable()
 export class EventService {
-    constructor(
-    ) {}
+  constructor() {}
 
-    async create(createEventDto: CreateEventDto): Promise<void> {
-    console.log(createEventDto)
-    }
+  async create(createEventDto: CreateEventDto): Promise<void> {
+    console.log(createEventDto);
+    await Promise.resolve();
+  }
 
-    async reserve(createReserveDto: CreateReserveDto): Promise<void> {
-        console.log(createReserveDto)
-    }
+  async reserve(createReserveDto: CreateReserveDto): Promise<void> {
+    console.log(createReserveDto);
+    await Promise.resolve();
+  }
 }

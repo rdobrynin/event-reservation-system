@@ -3,29 +3,28 @@ import { ApiProperty } from '@nestjs/swagger';
 import type { Type as Class } from '@nestjs/common';
 
 export function UUIDProperty(
-    options: Omit<ApiPropertyOptions, 'type' | 'format'> &
-        Partial<{ each: boolean }> = {},
+  options: Omit<ApiPropertyOptions, 'type' | 'format'> &
+    Partial<{ each: boolean }> = {},
 ): PropertyDecorator {
-    // @ts-ignore
-    return ApiProperty({
-        type: options?.each ? [String] : String,
-        format: 'uuid',
-        isArray: options?.each,
-        ...options,
-    });
+  // @ts-ignore
+  return ApiProperty({
+    type: options?.each ? [String] : String,
+    format: 'uuid',
+    isArray: options?.each,
+    ...options,
+  });
 }
 
 export function ObjectProperty<T>(
-    getType: () => Class<T>,
-    options: Omit<ApiPropertyOptions, 'type'> & { each?: boolean } = {},
+  getType: () => Class<T>,
+  options: Omit<ApiPropertyOptions, 'type'> & { each?: boolean } = {},
 ): PropertyDecorator {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { each, ...restOptions } = options;
+  const { each, ...restOptions } = options;
 
-    // @ts-ignore
-    return ApiProperty({
-        type: () => getType(),
-        isArray: each,
-        ...restOptions,
-    });
+  // @ts-ignore
+  return ApiProperty({
+    type: () => getType(),
+    isArray: each,
+    ...restOptions,
+  });
 }

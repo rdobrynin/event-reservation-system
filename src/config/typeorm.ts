@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
-import {SnakeNamingStrategy} from "typeorm-naming-strategies";
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 config();
 
