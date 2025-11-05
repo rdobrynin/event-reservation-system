@@ -51,7 +51,7 @@ export class EventService {
     if (booking) {
       const maxPlaces = this.configService.get<number>('EVENT_MAX_SEATS')!;
       this.logger.log(`Max places in event: ${entity.id}: ${maxPlaces}`);
-      if (maxPlaces - booking.length === 0) {
+      if (maxPlaces === booking.length) {
         throw new EventExceedPlaceException();
       }
     }

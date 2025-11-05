@@ -267,6 +267,13 @@ Exception via service
   "statusCode": 400
 }
 ```
+```
+{
+  "message": "error.bookingExceedPlace",
+  "error": "Bad Request",
+  "statusCode": 400
+}
+```
 5. `http://localhost:9000/api/bookings/all`
 6. http://localhost:9000/api/bookings/{id}` - id as UUID
 
