@@ -19,7 +19,7 @@ export class EventService {
     private logger: Logger,
   ) {}
 
-  async create(createEventDto: CreateEventDto): Promise<void> {
+  async create(createEventDto: CreateEventDto): Promise<EventDto> {
     //  for some logic if max_seats not set in ENV, default value is 100
     const maxPlaces = this.configService.get<number>('EVENT_MAX_SEATS') || 100;
 
@@ -31,7 +31,7 @@ export class EventService {
       ...createEventDto,
     });
 
-    await this.repo.save(event);
+    return (await this.repo.save(event)).toDto();
   }
 
   async getEventForReserve(createReserveDto: CreateReserveDto): Promise<Event> {
@@ -51,9 +51,7 @@ export class EventService {
     if (booking) {
       const maxPlaces = this.configService.get<number>('EVENT_MAX_SEATS')!;
       this.logger.log(`Max places in event: ${entity.id}: ${maxPlaces}`);
-      if (
-       maxPlaces - booking.length === 0
-      ) {
+      if (maxPlaces - booking.length === 0) {
         throw new EventExceedPlaceException();
       }
     }

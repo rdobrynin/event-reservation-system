@@ -18,8 +18,12 @@ export class EventController {
   constructor(private eventService: EventService) {}
 
   @Post('/create')
+  @ApiOkResponse({
+    type: EventDto,
+    description: 'create event',
+  })
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createEventDto: CreateEventDto): Promise<void> {
+  create(@Body() createEventDto: CreateEventDto): Promise<EventDto> {
     return this.eventService.create(createEventDto);
   }
 
