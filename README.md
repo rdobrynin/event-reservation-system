@@ -345,6 +345,8 @@ Coverage tests
 
 ![Test Image 1](screen_cover_tests.png)
 
+![Test Image 1](tests_ci.png)
+
 
 
 ## Useful Makefile commands
