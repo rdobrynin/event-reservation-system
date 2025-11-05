@@ -1,12 +1,13 @@
-import { IsDate, IsUUID } from 'class-validator';
+import { IsUUID } from 'class-validator';
 
 import { IAbstractEntity } from '../entites/abstract.entity';
+import { DateField } from '../decorators/field.decorators';
 
 export class AbstractDto {
   @IsUUID()
   id: string;
 
-  @IsDate()
+  @DateField()
   createdAt: Date;
 
   constructor(entity: IAbstractEntity<AbstractDto>) {
