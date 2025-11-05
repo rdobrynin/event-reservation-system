@@ -14,6 +14,6 @@ export default new DataSource({
   entities: ['src/**/*.entity{.ts,.js}'],
   migrations: ['src/migrations/*{.ts,.js}'],
   synchronize: false,
-  logging: process.env.NODE_ENV === 'development',
+  logging: process.env.NODE_ENV !== 'production',
   namingStrategy: new SnakeNamingStrategy(),
 });

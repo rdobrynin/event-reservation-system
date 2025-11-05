@@ -1,9 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AbstractDto } from '../../../common/dto/abstract.dto';
 import { IEventEntity } from '../interfaces/IEventEntity';
-import {
-  ObjectPropertyOptional,
-} from '../../../common/decorators/property.decorators';
+import { ObjectPropertyOptional } from '../../../common/decorators/property.decorators';
 import { Booking } from '../../booking/booking.entity';
 
 export class EventDto extends AbstractDto {
