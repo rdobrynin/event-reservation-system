@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { Booking } from './booking.entity';
 import { BookingDto } from './dto/booking.dto';
 import { BookingNotFoundException } from './exceptions/booking-not-found.exception';
+import { BookingExceedPlaceException } from './exceptions/booking-exceed-place.exception';
 
 @Injectable()
 export class BookingService {
@@ -48,11 +49,12 @@ export class BookingService {
   }
 
   async reserve(createReserveDto: CreateReserveDto): Promise<BookingDto> {
-    console.log(createReserveDto);
-    // await this.repo.findOneBy({userId: createReserveDto.userId})
-    // const t = await this.eventService.reserve(createReserveDto);
     const event: Event =
       await this.eventService.getEventForReserve(createReserveDto);
+
+    if (event.booking && event.totalSeats <= event.booking.length) {
+      throw new BookingExceedPlaceException();
+    }
 
     const book = this.repo.create({
       userId: createReserveDto.userId,

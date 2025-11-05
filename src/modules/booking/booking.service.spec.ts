@@ -114,7 +114,6 @@ describe('BookingService', () => {
     const createReserveDto: CreateReserveDto = {
       userId: 'user123',
       eventId: 'event123',
-      // Add other required DTO properties
     };
 
     it('should create and return a booking DTO', async () => {
