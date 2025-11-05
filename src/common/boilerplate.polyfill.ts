@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import type { AbstractDto } from './dto/abstract.dto';
 
 export type Optional<T> = T | undefined;
