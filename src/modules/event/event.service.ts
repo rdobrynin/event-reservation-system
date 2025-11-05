@@ -34,10 +34,11 @@ export class EventService {
     await this.repo.save(event);
   }
 
-  async reserve(createReserveDto: CreateReserveDto): Promise<void> {
+  async getEventForReserve(createReserveDto: CreateReserveDto): Promise<Event> {
     const entity = await this.repo
-      .createQueryBuilder()
-      .where('id = :id', { id: createReserveDto.eventId })
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.booking', 'booking')
+      .where('event.id = :id', { id: createReserveDto.eventId })
       .getOne();
 
     if (!entity) {
@@ -45,7 +46,20 @@ export class EventService {
       throw new EventNotFoundException();
     }
 
-    await Promise.resolve();
+    const booking = entity.booking;
+
+    if (booking) {
+      const maxPlaces = this.configService.get<number>('EVENT_MAX_SEATS')!;
+      this.logger.log(`Max places in event: ${entity.id}: ${maxPlaces}`);
+      if (
+        booking.find((book) => book.userId === createReserveDto.userId) ||
+        maxPlaces - booking.length === 0
+      ) {
+        throw new EventExceedPlaceException();
+      }
+    }
+
+    return entity;
   }
 
   async getAll(): Promise<EventDto[]> {
@@ -69,11 +83,18 @@ export class EventService {
   }
 
   async getOne(id: string): Promise<EventDto> {
-    const entity = await this.repo.findOneBy({ id: id });
+    const entity = await this.repo
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.booking', 'booking')
+      .where('event.id = :id', {
+        id,
+      })
+      .getOne();
 
     if (!entity) {
       throw new EventNotFoundException();
     }
+
     return entity.toDto();
   }
 }
