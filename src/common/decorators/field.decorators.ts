@@ -6,6 +6,7 @@ import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   ArrayMinSize,
+  IsDate,
   IsInt,
   IsNumber,
   IsPositive,
@@ -196,6 +197,25 @@ export function StringFieldOptional(
     IsUndefinable(),
     StringField({ required: false, ...options }),
   );
+}
+
+export function DateField(
+  options: Omit<ApiPropertyOptions, 'type'> & Partial<{ swagger: false }> = {},
+): PropertyDecorator {
+  const decorators = [Type(() => Date), IsDate()];
+
+  if (options?.nullable) {
+    decorators.push(IsNullable());
+  } else {
+    decorators.push(NotEquals(null));
+  }
+
+  if (options?.swagger !== false) {
+    // @ts-ignore
+    decorators.push(ApiProperty({ type: Date, ...options }));
+  }
+
+  return applyDecorators(...decorators);
 }
 
 export function ObjectField<T>(

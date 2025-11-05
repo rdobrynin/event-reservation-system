@@ -7,6 +7,6 @@ export class CreateEventDto {
   @StringField()
   name: string;
 
-  @NumberField()
+  @NumberField({ min: 1 })
   totalSeats: number;
 }

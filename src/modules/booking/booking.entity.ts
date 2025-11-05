@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, Unique } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 
 import { BookingDto } from './dto/booking.dto';
 import { UseDto } from '../../common/decorators/use-dto.decorators';
@@ -14,7 +14,10 @@ export class Booking extends AbstractEntity<BookingDto> {
   @Column({ type: 'uuid' })
   eventId: string;
 
-  @OneToOne(() => Event, (event) => event.booking)
+  @ManyToOne(() => Event, (event) => event.booking, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'event_id' }) // Custom foreign key name
   event: Event;
 }

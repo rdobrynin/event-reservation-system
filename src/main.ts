@@ -45,6 +45,9 @@ async function bootstrap() {
     }),
   );
 
+  // added via prefix , due to no versionity, otherwise it should be added to swagger config
+  app.setGlobalPrefix('api');
+
   const config = new DocumentBuilder()
     .setTitle('Booking')
     .setDescription('Booking API')

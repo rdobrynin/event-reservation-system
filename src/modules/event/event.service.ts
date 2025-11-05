@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Event } from './event.entity';
 import { EventDto } from './dto/event.dto';
+import { Logger } from 'nestjs-pino';
 import { plainToInstance } from 'class-transformer';
 import { EventNotFoundException } from './exceptions/event-not-found.exception';
 
@@ -15,9 +16,10 @@ export class EventService {
   constructor(
     @InjectRepository(Event) private repo: Repository<Event>,
     private readonly configService: ConfigService,
+    private logger: Logger,
   ) {}
 
-  async create(createEventDto: CreateEventDto): Promise<void> {
+  async create(createEventDto: CreateEventDto): Promise<EventDto> {
     //  for some logic if max_seats not set in ENV, default value is 100
     const maxPlaces = this.configService.get<number>('EVENT_MAX_SEATS') || 100;
 
@@ -29,16 +31,39 @@ export class EventService {
       ...createEventDto,
     });
 
-    await this.repo.save(event);
+    return (await this.repo.save(event)).toDto();
   }
 
-  async reserve(createReserveDto: CreateReserveDto): Promise<void> {
-    console.log(createReserveDto);
-    await Promise.resolve();
+  async getEventForReserve(createReserveDto: CreateReserveDto): Promise<Event> {
+    const entity = await this.repo
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.booking', 'booking')
+      .where('event.id = :id', { id: createReserveDto.eventId })
+      .getOne();
+
+    if (!entity) {
+      this.logger.error(createReserveDto.eventId, 'Event not found by ID');
+      throw new EventNotFoundException();
+    }
+
+    const booking = entity.booking;
+
+    if (booking) {
+      const maxPlaces = this.configService.get<number>('EVENT_MAX_SEATS')!;
+      this.logger.log(`Max places in event: ${entity.id}: ${maxPlaces}`);
+      if (maxPlaces - booking.length === 0) {
+        throw new EventExceedPlaceException();
+      }
+    }
+
+    return entity;
   }
 
   async getAll(): Promise<EventDto[]> {
-    const entities = await this.repo.createQueryBuilder().getMany();
+    const entities = await this.repo
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.booking', 'booking')
+      .getMany();
 
     if (entities.length === 0) {
       return [];
@@ -47,12 +72,7 @@ export class EventService {
     const eventDtos: EventDto[] = [];
 
     for (const entity of entities) {
-      const dto: EventDto = {
-        ...entity,
-        name: entity.name,
-        totalSeats: entity.totalSeats,
-      };
-      eventDtos.push(dto);
+      eventDtos.push(entity.toDto());
     }
 
     // didn't add pagination class due to no requirements in test assignment
@@ -60,15 +80,18 @@ export class EventService {
   }
 
   async getOne(id: string): Promise<EventDto> {
-    const entity = await this.repo.findOneBy({ id: id });
+    const entity = await this.repo
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.booking', 'booking')
+      .where('event.id = :id', {
+        id,
+      })
+      .getOne();
 
     if (!entity) {
       throw new EventNotFoundException();
     }
-    return {
-      ...entity,
-      name: entity.name,
-      totalSeats: entity.totalSeats,
-    };
+
+    return entity.toDto();
   }
 }

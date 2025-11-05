@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddDummyData1762334886398 implements MigrationInterface {
+export class AddDummyDataEventTable1762337178485 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
             INSERT INTO "event" ("name", "total_seats")

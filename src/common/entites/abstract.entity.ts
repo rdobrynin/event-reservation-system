@@ -22,8 +22,8 @@ export abstract class AbstractEntity<
 
   private dtoClass: Constructor<DTO>;
 
-  toDto<T>(options?: O | GetConstructorArgs<T>[1]): DTO {
-    const dtoClass = this.dtoClass;
+  toDto(options?: O): DTO {
+    const dtoClass = Object.getPrototypeOf(this).dtoClass;
 
     if (!dtoClass) {
       throw new Error(
@@ -31,7 +31,7 @@ export abstract class AbstractEntity<
       );
     }
 
-    return new this.dtoClass(this, options);
+    return new dtoClass(this, options);
   }
 }
 
