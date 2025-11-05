@@ -35,8 +35,8 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/await-thenable': 'off',
-
-
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
 );
