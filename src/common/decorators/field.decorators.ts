@@ -26,7 +26,7 @@ import {
   Trim,
 } from './transforms.decorator';
 import { IsNullable, IsUndefinable } from './validators.decorators';
-import {UUIDProperty} from "./property.decorators";
+import { UUIDProperty } from './property.decorators';
 
 interface INumberFieldDecorator {
   each?: boolean;
@@ -56,7 +56,7 @@ interface IPropertyTypeFieldDecorator {
 }
 
 export function NumberField(
-    options: Omit<ApiPropertyOptions, 'type'> & INumberFieldDecorator = {},
+  options: Omit<ApiPropertyOptions, 'type'> & INumberFieldDecorator = {},
 ): PropertyDecorator {
   const decorators = [Type(() => Number)];
 
@@ -67,9 +67,13 @@ export function NumberField(
   }
 
   if (options?.swagger !== false) {
-    // @ts-ignore
-    decorators.push(ApiProperty({type: Number, ...options, isArray: options.each || options.isArray,
-        }),
+    decorators.push(
+      // @ts-ignore
+      ApiProperty({
+        type: Number,
+        ...options,
+        isArray: options.each || options.isArray,
+      }),
     );
   }
 
@@ -117,8 +121,8 @@ export function NumberFieldOptional(
 }
 
 export function UUIDField(
-    options: Omit<ApiPropertyOptions, 'type' | 'format'> &
-        Partial<{ each: boolean; swagger: boolean }> = {},
+  options: Omit<ApiPropertyOptions, 'type' | 'format'> &
+    Partial<{ each: boolean; swagger: boolean }> = {},
 ): PropertyDecorator {
   const decorators = [IsUUID('4', { each: options?.each })];
 

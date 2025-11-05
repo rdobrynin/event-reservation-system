@@ -1,8 +1,4 @@
-import {
-  CreateDateColumn,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 import type { Constructor } from '../boilerplate.polyfill';
 import type { AbstractDto } from '../dto/abstract.dto';
@@ -24,11 +20,6 @@ export abstract class AbstractEntity<
   })
   createdAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-  })
-  updatedAt: Date;
-
   private dtoClass: Constructor<DTO>;
 
   toDto<T>(options?: O | GetConstructorArgs<T>[1]): DTO {
@@ -47,7 +38,6 @@ export abstract class AbstractEntity<
 export interface IAbstractEntity<DTO extends AbstractDto, O = never> {
   id: string;
   createdAt: Date;
-  updatedAt: Date;
 
   /**
    * @param {GetConstructorArgs<>[1] | } options

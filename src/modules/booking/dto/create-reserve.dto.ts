@@ -1,12 +1,9 @@
-import {
- UUIDField,
-} from '../../../common/decorators/field.decorators';
+import { UUIDField } from '../../../common/decorators/field.decorators';
 
 export class CreateReserveDto {
-    @UUIDField()
-    eventId: string;
+  @UUIDField()
+  eventId: string;
 
-
-    @UUIDField()
-    userId: string;
+  @UUIDField()
+  userId: string;
 }

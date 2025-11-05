@@ -1,21 +1,21 @@
-import {NestFactory, Reflector} from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import {ClassSerializerInterceptor, ValidationPipe} from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import RateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
-import { patchTypeORMRepositoryWithBaseRepository } from 'typeorm-transactional-cls-hooked';
-
-import { initializeTransactionalContext } from 'typeorm-transactional';
+// import { patchTypeORMRepositoryWithBaseRepository } from 'typeorm-transactional-cls-hooked';
+//
+// import { initializeTransactionalContext } from 'typeorm-transactional';
 import process from 'process';
-import {QueryFailedFilter} from "./common/filters/query-failed.filter";
-import {constraintErrors} from "./common/filters/constraint-errors";
-import {UnprocessableEntityFilter} from "./common/filters/unprocessable-entity.filter";
+import { QueryFailedFilter } from './common/filters/query-failed.filter';
+import { constraintErrors } from './common/filters/constraint-errors';
+import { UnprocessableEntityFilter } from './common/filters/unprocessable-entity.filter';
 
 async function bootstrap() {
-  initializeTransactionalContext();
-  patchTypeORMRepositoryWithBaseRepository();
+  // initializeTransactionalContext();
+  // patchTypeORMRepositoryWithBaseRepository();
   const app = await NestFactory.create(AppModule, {
     cors: true,
     bufferLogs: true,
@@ -27,8 +27,8 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
 
   app.useGlobalFilters(
-      new UnprocessableEntityFilter(),
-      new QueryFailedFilter(constraintErrors),
+    new UnprocessableEntityFilter(),
+    new QueryFailedFilter(constraintErrors),
   );
 
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
