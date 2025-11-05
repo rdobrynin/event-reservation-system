@@ -2,7 +2,7 @@ name: Event Reservation NodeJS CI
 
 on:
   push:
-    branches: [ main, fix/test ]
+    branches: [ main ]
   pull_request:
     branches: [main]
 

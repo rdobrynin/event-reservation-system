@@ -1,5 +1,20 @@
 # Event Registration System
 
+
+Stack:
+- NodeJS 23v
+- NestJS 11v
+- PostgreSQL 15v
+
+
+
+Для наглядности немного кастомизмровал следущие вещи:
+1. Использовал abstarct class для id и created_at полей
+2. сделал трансформер toDto() c прототипированием объекта и декоратор
+3. добавил кастомные декораторы для валидности с swagger и самим валидатором
+4. Использовал contraint exception (src/filters/query-failed.filter.ts)
+5. Добавио унит тесты в CI
+
 ## Run project app
 
 1. 
@@ -325,6 +340,10 @@ $ pnpm run test:e2e
 # test coverage
 $ pnpm run test:cov
 ```
+
+Coverage tests
+
+![Test Image 1](screen_cover_tests.png)
 
 
 
