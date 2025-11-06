@@ -5,6 +5,7 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import RateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
+import { initializeTransactionalContext } from 'typeorm-transactional';
 // import { patchTypeORMRepositoryWithBaseRepository } from 'typeorm-transactional-cls-hooked';
 //
 // import { initializeTransactionalContext } from 'typeorm-transactional';
@@ -14,7 +15,7 @@ import { constraintErrors } from './common/filters/constraint-errors';
 import { UnprocessableEntityFilter } from './common/filters/unprocessable-entity.filter';
 
 async function bootstrap() {
-  // initializeTransactionalContext();
+  initializeTransactionalContext();
   // patchTypeORMRepositoryWithBaseRepository();
   const app = await NestFactory.create(AppModule, {
     cors: true,

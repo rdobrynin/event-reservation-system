@@ -8,6 +8,7 @@ import { Booking } from './booking.entity';
 import { BookingDto } from './dto/booking.dto';
 import { BookingNotFoundException } from './exceptions/booking-not-found.exception';
 import { BookingExceedPlaceException } from './exceptions/booking-exceed-place.exception';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class BookingService {
@@ -48,6 +49,7 @@ export class BookingService {
     return entity.toDto();
   }
 
+  @Transactional()
   async reserve(createReserveDto: CreateReserveDto): Promise<BookingDto> {
     const event: Event =
       await this.eventService.getEventForReserve(createReserveDto);
