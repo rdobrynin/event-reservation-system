@@ -9,6 +9,14 @@ import { BookingNotFoundException } from './exceptions/booking-not-found.excepti
 import { booking } from './dto/booking.test-data';
 import { event } from '../event/dto/event.test-data';
 
+jest.mock('typeorm-transactional', () => ({
+  Transactional: () => () => ({}),
+  BaseRepository: class {},
+  runOnTransactionCommit: jest.fn(),
+  runOnTransactionRollback: jest.fn(),
+  runOnTransactionComplete: jest.fn(),
+}));
+
 describe('BookingService', () => {
   let service: BookingService;
   let repo: Repository<Booking>;

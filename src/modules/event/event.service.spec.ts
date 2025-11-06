@@ -10,6 +10,14 @@ import { CreateReserveDto } from '../booking/dto/create-reserve.dto';
 import { EventExceedPlaceException } from './exceptions/event-exceed-place.exception';
 import { EventNotFoundException } from './exceptions/event-not-found.exception';
 
+jest.mock('typeorm-transactional', () => ({
+  Transactional: () => () => ({}),
+  BaseRepository: class {},
+  runOnTransactionCommit: jest.fn(),
+  runOnTransactionRollback: jest.fn(),
+  runOnTransactionComplete: jest.fn(),
+}));
+
 describe('EventService', () => {
   let service: EventService;
   let repo: Repository<Event>;

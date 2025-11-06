@@ -7,6 +7,8 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { LoggerModule } from 'nestjs-pino';
 import { BookingModule } from './modules/booking/booking.module';
 import { EventModule } from './modules/event/event.module';
+import { DataSource } from 'typeorm';
+import { addTransactionalDataSource } from 'typeorm-transactional';
 
 @Module({
   imports: [
@@ -31,6 +33,15 @@ import { EventModule } from './modules/event/event.module';
         } as TypeOrmModuleOptions;
       },
       inject: [ConfigService],
+      dataSourceFactory: (options) => {
+        if (!options) {
+          throw new Error('Invalid options passed');
+        }
+
+        return Promise.resolve(
+          addTransactionalDataSource(new DataSource(options)),
+        );
+      },
       // async dataSourceFactory(options) {
       //   if (!options) {
       //     throw new Error('Invalid options passed');

@@ -10,6 +10,7 @@ import { EventDto } from './dto/event.dto';
 import { Logger } from 'nestjs-pino';
 import { plainToInstance } from 'class-transformer';
 import { EventNotFoundException } from './exceptions/event-not-found.exception';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class EventService {
@@ -19,6 +20,7 @@ export class EventService {
     private logger: Logger,
   ) {}
 
+  @Transactional()
   async create(createEventDto: CreateEventDto): Promise<EventDto> {
     //  for some logic if max_seats not set in ENV, default value is 100
     const maxPlaces = this.configService.get<number>('EVENT_MAX_SEATS') || 100;
